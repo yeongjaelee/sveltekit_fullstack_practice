@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1691048984035,
+      "tag": "0000_fantastic_zuras",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1691130685283,
+      "tag": "0001_dazzling_miek",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1691135655873,
+      "tag": "0002_sour_spitfire",
+      "breakpoints": true
+    }
+  ]
+}
