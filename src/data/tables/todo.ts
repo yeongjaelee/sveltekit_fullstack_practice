@@ -1,5 +1,5 @@
 import { boolean, date, integer, pgTable, serial, varchar } from 'drizzle-orm/pg-core';
-import { relations } from 'drizzle-orm';
+import {InferModel, relations} from 'drizzle-orm';
 import { users } from './users';
 
 export const todos = pgTable('todos', {
@@ -17,3 +17,6 @@ export const todosRelations = relations(todos, ({ one }) => ({
                 references: [users.id]
         })
 }));
+
+export type Todo = InferModel<typeof todos>
+export type NewTodo = InferModel<typeof todos, 'insert'>

@@ -3,10 +3,11 @@ import {db} from "../../data/db";
 import {todos, users} from "$data/schema";
 import {eq} from "drizzle-orm";
 import type {PageServerLoad} from './$types';
+import {NewTodo} from "../../data/tables/todo";
 export const load: PageServerLoad = async ({parent})=>{
     const parentData = await parent()
     const user = parentData.user
-    const todoList = await db.select().from(todos).where(eq(todos.authorId, user.id)).limit(10)
+    const todoList = await db.select().from(todos).where(eq(todos.authorId, user.id)).where(eq(todos.isDeleted, false)).limit(10)
 
     return {
         todoList
@@ -29,10 +30,12 @@ export const actions : Actions = {
                 message:"내용을 입력해주세요"
             })
         }
-        await db.insert(todos).values({
+
+        const newTodo: NewTodo = {
             contents,
-            authorId:user.id
-        }).catch((_)=>{
+            authorId: user.id
+        }
+        await db.insert(todos).values(newTodo).catch((_)=>{
             return fail(400, {
                 message: '실패요'
             })
@@ -55,6 +58,19 @@ export const actions : Actions = {
             success:true,
             message:"완료성공요"
         }
-
+    },
+    delete : async ({request}) => {
+        const data = await request.formData()
+        const id = data.get('id')?data.get('id') as number:undefined
+        if(!id){
+            return fail(400, {
+                message:"오류발생"
+            })
+        }
+        await db.update(todos).set({isDeleted: true}).where(eq(todos.id, id));
+        return {
+            success:true,
+            message:"완료성공요"
+        }
     }
 }

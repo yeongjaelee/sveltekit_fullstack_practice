@@ -2,6 +2,7 @@ import type {Actions} from "./$types";
 import { fail, redirect } from '@sveltejs/kit';
 import {users} from "$data/schema";
 import {db} from "$data/db";
+import {NewUser, User} from "../../data/tables/users";
 
 
 export const actions: Actions ={
@@ -18,9 +19,14 @@ export const actions: Actions ={
         if(!password){
             return fail(400, {message:"비밀번호를 입력해주세요"})
         }
-        const user = await db.insert(users).values({
+
+        const newUser : NewUser = {
             email, password
-        }).returning()
+        }
+        const result: User[] = await db.insert(users).values(newUser).returning()
+
+        const user: User = result[0]
+
         if (user){
             throw redirect(302, '/home')
         } else{

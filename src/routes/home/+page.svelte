@@ -29,14 +29,19 @@
                 {/if}
             </div>
 
-            <div class="flex ml-auto space-x-2">
+            <div class="flex flex-row ml-auto space-x-2">
                 <form method="POST" action="?/finish" use:enhance>
                     <input type="hidden" value={todo.id} name="id">
                     <button class="border p-2 text-blue">
                         완료
                     </button>
                 </form>
-
+                <form method="POST" action="?/delete" use:enhance>
+                    <input type="hidden" value={todo.id} name="id">
+                    <button class="border p-2 text-blue">
+                        삭제
+                    </button>
+                </form>
             </div>
         {/each}
     </div>
